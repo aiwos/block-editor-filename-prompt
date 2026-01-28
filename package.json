@@ -1,0 +1,14 @@
+{
+  "name": "gutenberg-image-filename-prompt",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Prompt for a filename when pasting images into the block editor.",
+  "scripts": {
+    "build": "wp-scripts build",
+    "start": "wp-scripts start",
+    "lint:js": "wp-scripts lint-js"
+  },
+  "devDependencies": {
+    "@wordpress/scripts": "^31.3.0"
+  }
+}

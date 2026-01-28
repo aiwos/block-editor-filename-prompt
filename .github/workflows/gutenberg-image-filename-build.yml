@@ -1,0 +1,56 @@
+name: Build gutenberg-image-filename-prompt
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: web/app/plugins/gutenberg-image-filename-prompt
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+          cache-dependency-path: web/app/plugins/gutenberg-image-filename-prompt/package-lock.json
+
+      - name: Install
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Package plugin
+        run: |
+          rm -rf /tmp/gutenberg-image-filename-prompt
+          mkdir -p /tmp/gutenberg-image-filename-prompt
+          rsync -a . /tmp/gutenberg-image-filename-prompt/ \
+            --exclude=node_modules \
+            --exclude=src \
+            --exclude=.git \
+            --exclude=.github \
+            --exclude=package-lock.json \
+            --exclude=package.json
+          cd /tmp/gutenberg-image-filename-prompt
+          zip -r /tmp/gutenberg-image-filename-prompt.zip .
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: gutenberg-image-filename-prompt
+          path: /tmp/gutenberg-image-filename-prompt.zip
+
+      - name: Upload to release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: /tmp/gutenberg-image-filename-prompt.zip
