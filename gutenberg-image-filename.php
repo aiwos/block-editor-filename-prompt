@@ -3,6 +3,7 @@
  * Plugin Name: Block Editor Image Filename Prompt
  * Description: Prompts for a filename when pasting images into the block editor and uploads with that filename.
  * Version: 1.0
+ * License: GPLv2 or later
  * Author: Aiwos BV, Jurriaan Koops
  * Text Domain: gutenberg-image-filename-prompt
  */
