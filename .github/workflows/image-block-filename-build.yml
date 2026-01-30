@@ -1,4 +1,4 @@
-name: Build gutenberg-image-filename-prompt
+name: Build image-block-filename-prompt
 
 on:
   release:
@@ -31,9 +31,9 @@ jobs:
 
       - name: Package plugin
         run: |
-          rm -rf /tmp/gutenberg-image-filename-prompt
-          mkdir -p /tmp/gutenberg-image-filename-prompt
-          rsync -a . /tmp/gutenberg-image-filename-prompt/ \
+          rm -rf /tmp/image-block-filename-prompt
+          mkdir -p /tmp/image-block-filename-prompt
+          rsync -a . /tmp/image-block-filename-prompt/ \
             --exclude=node_modules \
             --exclude=src \
             --exclude=.git \
@@ -41,26 +41,26 @@ jobs:
             --exclude=.gitignore \
             --exclude=package-lock.json \
             --exclude=package.json
-          cd /tmp/gutenberg-image-filename-prompt
-          zip -r /tmp/gutenberg-image-filename-prompt.zip .
+          cd /tmp/image-block-filename-prompt
+          zip -r /tmp/image-block-filename-prompt.zip .
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: gutenberg-image-filename-prompt
-          path: /tmp/gutenberg-image-filename-prompt.zip
+          name: image-block-filename-prompt
+          path: /tmp/image-block-filename-prompt.zip
 
       - name: Upload to release
         uses: softprops/action-gh-release@v2
         with:
-          files: /tmp/gutenberg-image-filename-prompt.zip
+          files: /tmp/image-block-filename-prompt.zip
 
       - name: Upload to WordPress repository
         uses: 10up/action-wordpress-plugin-deploy@stable
         with:
           generate-zip: false
           assets-dir: /tmp
-          plugin-main-file: gutenberg-image-filename.php
+          plugin-main-file: image-block-filename.php
           svn-username: ${{ secrets.SVN_USERNAME }}
           svn-password: ${{ secrets.SVN_PASSWORD }}
 

@@ -276,4 +276,4 @@ function Plugin() {
 	);
 }
 
-registerPlugin( 'gutenberg-image-filename-prompt', { render: Plugin } );
+registerPlugin( 'image-block-filename-prompt', { render: Plugin } );

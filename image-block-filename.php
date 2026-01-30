@@ -5,7 +5,7 @@
  * Version: 1.0
  * License: GPLv2 or later
  * Author: Aiwos BV, Jurriaan Koops
- * Text Domain: gutenberg-image-filename-prompt
+ * Text Domain: image-block-filename-prompt
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -32,7 +32,7 @@ function gifp_enqueue_block_editor_assets() {
 					return;
 				}
 				echo '<div class="notice notice-warning"><p>';
-				echo esc_html__( 'Gutenberg Image Filename Prompt: build assets not found. Run npm install && npm run build in the plugin folder.', 'gutenberg-image-filename-prompt' );
+				echo esc_html__( 'Block Editor Image Filename Prompt: build assets not found. Run npm install && npm run build in the plugin folder.', 'image-block-filename-prompt' );
 				echo '</p></div>';
 			}
 		);
@@ -56,7 +56,7 @@ function gifp_enqueue_block_editor_assets() {
 		);
 
 	wp_enqueue_script(
-		'gutenberg-image-filename-prompt',
+		'image-block-filename-prompt',
 		plugins_url( 'build/index.js', __FILE__ ),
 		$asset['dependencies'],
 		$asset['version'],
@@ -64,7 +64,7 @@ function gifp_enqueue_block_editor_assets() {
 	);
 
 	wp_add_inline_script(
-		'gutenberg-image-filename-prompt',
+		'image-block-filename-prompt',
 		'window.GIFilenamePrompt = ' . wp_json_encode(
 			array(
 				'nonce' => wp_create_nonce( 'wp_rest' ),

@@ -1,6 +1,6 @@
 === Block Editor Image Filename Prompt ===
 Contributors: jurriaankoops
-Tags: gutenberg, image, filename, upload
+Tags: block editor, image, filename, upload
 Requires at least: 5.9
 Tested up to: 6.9
 Stable tag: 1.0
@@ -16,7 +16,7 @@ Prompts for a filename when pasting images into the block editor, then uploads u
 
 == Installation ==
 
-1. Upload the plugin files to the `/wp-content/plugins/gutenberg-image-filename-prompt` directory, or install the plugin through the WordPress plugins screen directly.
+1. Upload the plugin files to the `/wp-content/plugins/image-block-filename-prompt` directory, or install the plugin through the WordPress plugins screen directly.
 2. Activate the plugin through the 'Plugins' screen in WordPress.
 
 == Frequently Asked Questions ==
