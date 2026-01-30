@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: web/app/plugins/gutenberg-image-filename-prompt
+        working-directory: .
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -22,8 +22,7 @@ jobs:
         with:
           node-version: 20
           cache: "npm"
-          cache-dependency-path: web/app/plugins/gutenberg-image-filename-prompt/package-lock.json
-
+          cache-dependency-path: package-lock.json
       - name: Install
         run: npm ci
 
@@ -54,3 +53,13 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: /tmp/gutenberg-image-filename-prompt.zip
+
+      - name: Upload to WordPress repository
+        uses: 10up/action-wordpress-plugin-deploy@stable
+        with:
+          generate-zip: false
+          assets-dir: /tmp
+          plugin-main-file: gutenberg-image-filename.php
+          svn-username: ${{ secrets.SVN_USERNAME }}
+          svn-password: ${{ secrets.SVN_PASSWORD }}
+
