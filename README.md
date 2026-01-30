@@ -1,6 +1,6 @@
-=== Block Editor Image Filename Prompt ===
+=== Image Block Filename Prompt ===
 Contributors: jurriaankoops
-Tags: block editor, image, filename, upload
+Tags: gutenberg, block editor, image, filename, upload
 Requires at least: 5.9
 Tested up to: 6.9
 Stable tag: 1.0

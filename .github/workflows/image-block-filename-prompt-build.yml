@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: .
+        working-directory: wp-content/plugins/image-block-filename-prompt
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -22,7 +22,7 @@ jobs:
         with:
           node-version: 20
           cache: "npm"
-          cache-dependency-path: package-lock.json
+          cache-dependency-path: wp-content/plugins/image-block-filename-prompt/package-lock.json
       - name: Install
         run: npm ci
 
@@ -60,7 +60,6 @@ jobs:
         with:
           generate-zip: false
           assets-dir: /tmp
-          plugin-main-file: image-block-filename.php
+          plugin-main-file: image-block-filename-prompt.php
           svn-username: ${{ secrets.SVN_USERNAME }}
           svn-password: ${{ secrets.SVN_PASSWORD }}
-
