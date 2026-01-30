@@ -1,4 +1,4 @@
-=== Gutenberg Image Filename Prompt ===
+=== Block Editor Image Filename Prompt ===
 Contributors: jurriaankoops
 Tags: gutenberg, image, filename, upload
 Requires at least: 5.9

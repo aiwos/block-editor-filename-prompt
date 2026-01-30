@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: Gutenberg Image Filename Prompt
+ * Plugin Name: Block Editor Image Filename Prompt
  * Description: Prompts for a filename when pasting images into the block editor and uploads with that filename.
  * Version: 1.0
  * Author: Aiwos BV, Jurriaan Koops
