@@ -24,6 +24,8 @@ const EXTENSIONS = {
 	'image/gif': 'gif',
 	'image/webp': 'webp',
 	'image/avif': 'avif',
+	'image/bmp': 'bmp',
+	'image/tiff': 'tiff',
 };
 
 const extFromMime = ( mime ) => EXTENSIONS[ mime ] || 'png';
@@ -72,6 +74,47 @@ const sanitizeFilenameBase = ( input ) => {
 		.replace( /(^[.-]+|[.-]+$)/g, '' );
 };
 
+const getImageUrlFromHtml = ( html ) => {
+	if ( ! html ) {
+		return '';
+	}
+	try {
+		const doc = new DOMParser().parseFromString( html, 'text/html' );
+		return doc?.querySelector( 'img' )?.getAttribute( 'src' ) || '';
+	} catch ( error ) {
+		return '';
+	}
+};
+
+const isLikelyImageUrl = ( value ) => {
+	const text = ( value || '' ).toString().trim();
+	if ( ! text ) {
+		return false;
+	}
+	if ( text.startsWith( 'data:image/' ) ) {
+		return true;
+	}
+	try {
+		const url = new URL( text );
+		return /\.(png|jpe?g|gif|webp|avif|bmp|tiff?)$/i.test( url.pathname );
+	} catch ( error ) {
+		return false;
+	}
+};
+
+const fetchImageBlob = async ( url ) => {
+	const response = await fetch( url, { credentials: 'omit' } );
+	if ( ! response.ok ) {
+		throw new Error( 'Unable to fetch image from clipboard URL.' );
+	}
+	const blob = await response.blob();
+	const mime =
+		response.headers.get( 'content-type' ) ||
+		blob.type ||
+		'image/png';
+	return { blob, mime };
+};
+
 const getNameOptions = () => {
 	const title = slugify( getPostTitle() );
 	const date = getDateStamp();
@@ -94,6 +137,10 @@ function Plugin() {
 	const [ blob, setBlob ] = useState( null );
 	const [ mime, setMime ] = useState( 'image/png' );
 	const [ name, setName ] = useState( getDefaultBaseName() );
+	const [ altText, setAltText ] = useState( '' );
+	const [ mediaTitle, setMediaTitle ] = useState( '' );
+	const [ caption, setCaption ] = useState( '' );
+	const [ description, setDescription ] = useState( '' );
 	const [ busy, setBusy ] = useState( false );
 	const isOpenRef = useRef( false );
 
@@ -111,25 +158,89 @@ function Plugin() {
 			const imageItem = Array.from( items ).find(
 				( item ) => item.type && item.type.startsWith( 'image/' )
 			);
-			if ( ! imageItem ) {
+			const files = event.clipboardData?.files;
+			const imageFile = files
+				? Array.from( files ).find(
+						( file ) => file.type && file.type.startsWith( 'image/' )
+				  )
+				: null;
+
+			if ( imageItem || imageFile ) {
+				event.preventDefault();
+
+				const file = imageFile || imageItem.getAsFile();
+				if ( ! file ) {
+					return;
+				}
+
+				setName( getDefaultBaseName() );
+				setBlob( file );
+				setMime( imageItem?.type || file.type || 'image/png' );
+				setOpen( true );
+				return;
+			}
+
+			const html = event.clipboardData?.getData( 'text/html' );
+			const urlFromHtml = getImageUrlFromHtml( html );
+			const plainText = event.clipboardData?.getData( 'text/plain' );
+			const url =
+				urlFromHtml || ( isLikelyImageUrl( plainText ) ? plainText : '' );
+
+			if ( ! url ) {
 				return;
 			}
 
 			event.preventDefault();
-
-			const file = imageItem.getAsFile();
-			if ( ! file ) {
-				return;
-			}
-
-			setName( getDefaultBaseName() );
-			setBlob( file );
-			setMime( imageItem.type || file.type || 'image/png' );
-			setOpen( true );
+			void ( async () => {
+				try {
+					const { blob: fetchedBlob, mime: fetchedMime } =
+						await fetchImageBlob( url );
+					setName( getDefaultBaseName() );
+					setBlob( fetchedBlob );
+					setMime( fetchedMime );
+					setOpen( true );
+				} catch ( error ) {
+					dispatch( 'core/notices' ).createErrorNotice(
+						`Paste upload failed: ${ error?.message || error }`,
+						{ isDismissible: true }
+					);
+				}
+			} )();
 		};
 
-		document.addEventListener( 'paste', onPaste, true );
-		return () => document.removeEventListener( 'paste', onPaste, true );
+		const targets = new Set();
+		const addTarget = ( doc ) => {
+			if ( ! doc || targets.has( doc ) ) {
+				return;
+			}
+			doc.addEventListener( 'paste', onPaste, true );
+			targets.add( doc );
+		};
+		const addIframeTarget = () => {
+			const iframe = document.querySelector(
+				'iframe[name="editor-canvas"]'
+			);
+			const iframeDoc = iframe?.contentDocument;
+			if ( iframeDoc ) {
+				addTarget( iframeDoc );
+			}
+		};
+		const observer = new MutationObserver( addIframeTarget );
+
+		addTarget( document );
+		addIframeTarget();
+		observer.observe( document.documentElement, {
+			childList: true,
+			subtree: true,
+		} );
+
+		return () => {
+			targets.forEach( ( doc ) =>
+				doc.removeEventListener( 'paste', onPaste, true )
+			);
+			targets.clear();
+			observer.disconnect();
+		};
 	}, [] );
 
 	const closeModal = () => {
@@ -138,6 +249,10 @@ function Plugin() {
 		}
 		setOpen( false );
 		setBlob( null );
+		setAltText( '' );
+		setMediaTitle( '' );
+		setCaption( '' );
+		setDescription( '' );
 	};
 
 	const uploadAndInsert = async () => {
@@ -164,6 +279,27 @@ function Plugin() {
 				body: formData,
 			} );
 
+			const updatePayload = {};
+			if ( altText ) {
+				updatePayload.alt_text = altText;
+			}
+			if ( mediaTitle ) {
+				updatePayload.title = mediaTitle;
+			}
+			if ( caption ) {
+				updatePayload.caption = caption;
+			}
+			if ( description ) {
+				updatePayload.description = description;
+			}
+			if ( Object.keys( updatePayload ).length ) {
+				await apiFetch( {
+					path: `/wp/v2/media/${ media.id }`,
+					method: 'POST',
+					data: updatePayload,
+				} );
+			}
+
 			const url = media?.source_url;
 			if ( ! url ) {
 				throw new Error( 'Upload succeeded but no URL returned.' );
@@ -172,7 +308,8 @@ function Plugin() {
 			const block = createBlock( 'core/image', {
 				id: media.id,
 				url,
-				alt: media?.alt_text || '',
+				alt: altText || media?.alt_text || '',
+				caption,
 			} );
 			dispatch( 'core/block-editor' ).insertBlocks( block );
 
@@ -249,6 +386,30 @@ function Plugin() {
 					>
 						Final file: { previewFilename }
 					</div>
+					<TextControl
+						label="Alternative Text"
+						value={ altText }
+						onChange={ setAltText }
+						disabled={ busy }
+					/>
+					<TextControl
+						label="Title"
+						value={ mediaTitle }
+						onChange={ setMediaTitle }
+						disabled={ busy }
+					/>
+					<TextControl
+						label="Caption"
+						value={ caption }
+						onChange={ setCaption }
+						disabled={ busy }
+					/>
+					<TextControl
+						label="Description"
+						value={ description }
+						onChange={ setDescription }
+						disabled={ busy }
+					/>
 					<Flex justify="flex-end" gap={ 2 }>
 						<FlexItem>
 							<Button
