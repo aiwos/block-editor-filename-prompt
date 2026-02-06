@@ -437,4 +437,5 @@ function Plugin() {
 	);
 }
 
-registerPlugin( 'image-block-filename-prompt', { render: Plugin } );
+registerPlugin( 'block-editor-filename-prompt', { render: Plugin } );
+block-editor-image-filename-prompt

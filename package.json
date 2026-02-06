@@ -1,5 +1,5 @@
 {
-  "name": "image-block-filename-prompt",
+  "name": "block-editor-image-filename-prompt",
   "version": "0.1.0",
   "private": true,
   "description": "Prompt for a filename when pasting images into the block editor.",

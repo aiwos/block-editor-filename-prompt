@@ -1,0 +1,11 @@
+# Gutenberg Image Filename Prompt - Dev Notes
+
+## Build
+- Install deps: `npm install`
+- Build assets: `npm run build`
+
+The compiled assets in `build/` are ignored by git.
+
+## Dev workflow
+- Edit source in `src/index.js`
+- Rebuild after changes before testing in WordPress
