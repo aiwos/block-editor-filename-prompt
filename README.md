@@ -1,5 +1,5 @@
 === Block Editor Image Filename Prompt ===
-Contributors: jurriaankoops
+Contributors: aiwos, jurriaankoops, svanderwindt
 Tags: gutenberg, block-editor, image, filename, upload
 Requires at least: 5.9
 Tested up to: 6.9
