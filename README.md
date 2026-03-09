@@ -14,6 +14,8 @@ Prompts for a filename when pasting images into the block editor, then uploads u
 
 Prompts for a filename when pasting images into the block editor, then uploads using that filename and inserts an Image block.
 
+Development note: `build/index.js` is the compiled output. The human-readable source is `src/index.js`.
+
 == Installation ==
 
 1. Upload the plugin files to the `/wp-content/plugins/block-editor-image-filename-prompt` directory, or install the plugin through the WordPress plugins screen directly.
