@@ -1,5 +1,5 @@
 === Block Editor Image Filename Prompt ===
-Contributors: jurriaankoops
+Contributors: aiwos, jurriaankoops, svanderwindt
 Tags: gutenberg, block-editor, image, filename, upload
 Requires at least: 5.9
 Tested up to: 6.9
@@ -13,6 +13,8 @@ Prompts for a filename when pasting images into the block editor, then uploads u
 == Description ==
 
 Prompts for a filename when pasting images into the block editor, then uploads using that filename and inserts an Image block.
+
+Development note: `build/index.js` is the compiled output. The human-readable source is `src/index.js`.
 
 == Installation ==
 

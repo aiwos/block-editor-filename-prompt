@@ -35,7 +35,6 @@ jobs:
           mkdir -p /tmp/block-editor-image-filename-prompt
           rsync -a . /tmp/block-editor-image-filename-prompt/ \
             --exclude=node_modules \
-            --exclude=src \
             --exclude=.git \
             --exclude=.github \
             --exclude=.gitignore \
