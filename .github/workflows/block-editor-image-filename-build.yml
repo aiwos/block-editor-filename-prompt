@@ -30,36 +30,18 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Package plugin
-        run: |
-          rm -rf /tmp/block-editor-image-filename-prompt
-          mkdir -p /tmp/block-editor-image-filename-prompt
-          rsync -a . /tmp/block-editor-image-filename-prompt/ \
-            --exclude=node_modules \
-            --exclude=.git \
-            --exclude=.github \
-            --exclude=.gitignore \
-            --exclude=package-lock.json \
-            --exclude=package.json
-          cd /tmp/block-editor-image-filename-prompt
-          zip -r /tmp/block-editor-image-filename-prompt.zip .
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: block-editor-image-filename-prompt
-          path: /tmp/block-editor-image-filename-prompt.zip
-
-      - name: Upload to release
-        uses: softprops/action-gh-release@v2
-        with:
-          files: /tmp/block-editor-image-filename-prompt.zip
-
       - name: Upload to WordPress repository
+        id: deploy
         uses: 10up/action-wordpress-plugin-deploy@stable
         with:
-          generate-zip: false
-          assets-dir: /tmp
-          plugin-main-file: block-editor-image-filename.php
-          svn-username: ${{ secrets.SVN_USERNAME }}
-          svn-password: ${{ secrets.SVN_PASSWORD }}
+          generate-zip: true
+        env:
+          SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+
+      - name: Upload release asset
+        uses: softprops/action-gh-release@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          files: ${{ steps.deploy.outputs.zip-path }}
