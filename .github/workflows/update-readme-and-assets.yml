@@ -1,12 +1,14 @@
-name: Update Plugin assets/readme
+name: Update plugin assets/readme in the WP repo
 on:
   push:
     branches:
-      - trunk
-
+      - main
+    paths:
+      - readme.txt
+      - assets/**
 jobs:
-  trunk:
-    name: Push to trunk
+  assets:
+    name: Update WordPress.org assets
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
