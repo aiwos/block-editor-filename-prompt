@@ -62,3 +62,4 @@ jobs:
           SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
           SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
           BUILD_DIR: /tmp/block-editor-image-filename-prompt
+          SLUG: block-editor-image-filename-prompt
