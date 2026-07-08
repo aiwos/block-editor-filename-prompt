@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - feature/workflows
+    paths:
+      - readme.txt
+      - assets/**
 jobs:
   assets:
     name: Update WordPress.org assets
