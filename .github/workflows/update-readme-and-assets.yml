@@ -1,5 +1,6 @@
 name: Update plugin assets/readme in the WP repo
 on:
+  workflow_dispatch:
   push:
     branches:
       - feature/workflows
@@ -15,9 +16,8 @@ jobs:
 
       - name: WordPress.org plugin asset/readme update
         uses: 10up/action-wordpress-plugin-asset-update@stable
-        with:
-          dry-run: true
         env:
           SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
           SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
           SLUG: block-editor-image-filename-prompt
+          ASSETS_DIR: .wordpress
