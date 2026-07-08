@@ -2,7 +2,7 @@ name: Update plugin assets/readme in the WP repo
 on:
   push:
     branches:
-      - feeature/workflows
+      - feature/workflows
     paths:
       - readme.txt
       - assets/**
