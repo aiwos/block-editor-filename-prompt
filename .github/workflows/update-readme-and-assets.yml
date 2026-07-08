@@ -21,3 +21,4 @@ jobs:
           SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
           SLUG: block-editor-image-filename-prompt
           ASSETS_DIR: .wordpress
+          IGNORE_OTHER_FILES: true
