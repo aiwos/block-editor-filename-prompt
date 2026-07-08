@@ -32,8 +32,3 @@ Simply paste an image into the block editor. You will be prompted to enter a fil
 = 1.0 =
 
 * Initial release.
-
-== Upgrade Notice ==
-
-= 1.0 =
-Initial release.
