@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Block Editor Image Filename Prompt
- * Description: Prompts for a filename when pasting images into the block editor and uploads with that filename.
+ * Description: Prompts for image metadata when pasting images into the block editor and uploads with a clean filename.
  * Version: 1.0
  * License: GPLv2 or later
  * Author: Aiwos BV, Jurriaan Koops
@@ -32,7 +32,7 @@ function gifp_enqueue_block_editor_assets() {
 					return;
 				}
 				echo '<div class="notice notice-warning"><p>';
-				echo esc_html__( 'Block editor Image Filename Prompt: build assets not found. Run npm install && npm run build in the plugin folder.', 'block-editor-image-filename-prompt' );
+				echo esc_html__( 'Block Editor Image Filename Prompt: build assets not found. Run npm install && npm run build in the plugin folder.', 'block-editor-image-filename-prompt' );
 				echo '</p></div>';
 			}
 		);

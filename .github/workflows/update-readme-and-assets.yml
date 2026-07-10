@@ -1,27 +1,21 @@
-name: Update plugin assets/readme in the WP repo
+name: Update Plugin assets/readme
 on:
-  workflow_dispatch:
   push:
     branches:
-      - feature/workflows
-    paths:
-      - readme.txt
-      - assets/**
+    - trunk
 jobs:
-  assets:
-    name: Update WordPress.org assets
+  trunk:
+    name: Push to trunk
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+    - uses: actions/checkout@v4
 
-      - name: Install Subversion
-        run: sudo apt-get update && sudo apt-get install subversion -y
+    # Ensure Subversion is installed
+    - name: Install Subversion
+      run: sudo apt-get update && sudo apt-get install subversion -y
 
-      - name: WordPress.org plugin asset/readme update
-        uses: 10up/action-wordpress-plugin-asset-update@stable
-        env:
-          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
-          SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
-          SLUG: block-editor-image-filename-prompt
-          ASSETS_DIR: .wordpress
-          IGNORE_OTHER_FILES: true
+    - name: WordPress.org plugin asset/readme update
+      uses: 10up/action-wordpress-plugin-asset-update@stable
+      env:
+        SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+        SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
