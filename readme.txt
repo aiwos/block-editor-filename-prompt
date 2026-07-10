@@ -43,8 +43,6 @@ Built by [Aiwos](https://aiwos.com), a digital studio that builds smart WordPres
 
 Source code is available in the [GitHub repository](https://github.com/JurriaanK/gutenberg-image-filename-prompt). Please report issues, suggest improvements, or submit pull requests there.
 
-Development note: `build/index.js` is the compiled output. The human-readable source is `src/index.js`.
-
 == Installation ==
 
 1. Upload the plugin files to the `/wp-content/plugins/block-editor-image-filename-prompt` directory, or install the plugin through the WordPress plugins screen directly.
