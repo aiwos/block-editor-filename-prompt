@@ -4,7 +4,7 @@ Tags: gutenberg, block-editor, image, filename, media-library, upload, paste, sc
 Requires at least: 5.9
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 1.0
+Stable tag: 1.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -65,6 +65,10 @@ The plugin supports pasted clipboard image files, image URLs, and copied HTML im
 Only logged-in users with permission to upload files can use the plugin.
 
 == Changelog ==
+
+= 1.0.1 =
+
+* Add image metadata fields and improve paste workflow documentation.
 
 = 1.0 =
 

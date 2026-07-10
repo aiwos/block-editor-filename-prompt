@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Block Editor Image Filename Prompt
  * Description: Prompts for image metadata when pasting images into the block editor and uploads with a clean filename.
- * Version: 1.0
+ * Version: 1.0.1
  * License: GPLv2 or later
  * Author: Aiwos BV, Jurriaan Koops
  * Text Domain: block-editor-image-filename-prompt
@@ -10,7 +10,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-const GIFP_PLUGIN_VERSION = '1.0';
+const GIFP_PLUGIN_VERSION = '1.0.1';
 
 /**
  * Enqueue block editor assets.
